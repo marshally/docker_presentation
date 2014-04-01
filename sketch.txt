@@ -1,26 +1,7 @@
-Hi everyone, I'm Marshall Yount. I'm a performance hacker and a Rubyist.
-
-Tonight I'm going to show you how to quickly and easily deploy a Rails app using Docker.
-
-If you are like me, the first Rails app you deployed was to a server that some one else had configured. Deployments were as easy as `cap deploy`!
-
-Later I got into puppet and chef, which automated a lot of the tedious commands for me. When I first started using these tools, I got really excited. Write once, deploy anywhere!
-
-But the reality is that this much lauded flexibility buys you very little. Has anyone read this article: slide. Can you summarize it for us?
-
-The Law of Leaky Abstractions states that "All non-trivial abstractions, to some degree, are leaky." This means that in order to use an abstraction you have to keep in your head the both the underlying and the abstracted behavior. Think of ActiveRecord and a really gnarly SQL join.
-http://www.joelonsoftware.com/articles/LeakyAbstractions.html
-
-The problem with Chef and Puppet, restated, is that you spend a lot of time learning their abstraction layer, but in order to use it properly you have to constantly be thinking about the nitty gritty details of the things they are automating for you anyway.
 
 Bash + Containers = Docker
 
 photo: balloon or scales?
-Docker is built on top of LXC, which is a container technology like chroot on steroids. It allows you to isolate processes and control memory, CPU, network access, etc. It is kind of like a VM, but but much lighter
-
-Docker is a layer on top of LXC that allows you to build a server out of the same bash commands that you would use for a beautiful unique snowflake deploy.
-
-What's nice about this is that when there is a problem you use the same troubleshooting toolkit. No more digging around in bash to find the correct incantation and then puzzling over how to get chef or puppet to do the right thing!
 
 The easiest, most portable way to install Docker is to use Vagrant. Since Vagrant 1.5, Vagrant supports a Docker provisioning type just like Chef, Puppet, etc.
 

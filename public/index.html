@@ -72,7 +72,7 @@
 
         <section data-background="/images/dockers-logo.jpg">
           <aside class="notes">
-            And I'm here tonight to show you how to quickly set up a Rails server using Docker.
+            Tonight I'm going to show you how to quickly set up a Rails server using Docker.
           </aside>
         </section>
 
@@ -93,141 +93,437 @@
             <li>Ruby, Rails, and RVM</li>
             <li>Tricky Bits</li>
           </ol>
+					<aside class="notes">
+						[read through slide to establish schedule]
+					</aside>
         </section>
 
-        <section data-background="/images/snowflake.jpg">
-          <a href="https://www.flickr.com/photos/chaoticmind75/6419556033/">
-            https://www.flickr.com/photos/chaoticmind75/6419556033/
-          </a>
+				<section data-background="/images/snowflake.jpg">
+					<p style="vertical-align: bottom; padding-top: 600px">
+						<a href="https://www.flickr.com/photos/chaoticmind75/6419556033/">
+							https://www.flickr.com/photos/chaoticmind75/6419556033/
+						</a>
+					</p>
+					<aside class="notes">
+If you are like me, the first Rails app you deployed was to a server that some one else had configured by hand.
+Man, this `cap deply` stuff sure is easy!
+I got a pretty nasty surprise the first time I had to configure a server on my own.
+Installing ruby in production can be a tedious process with a lot of steps and it is easy to get something wrong.
+It also leads to Beautiful Unique Snowflake servers, which are hard to troubleshoot and maintain.
+					</aside>
+				</section>
 
+        <section data-background="/images/chef2.jpg">
+					<p style="vertical-align: bottom; padding-top: 600px">
+	          <a href="https://www.flickr.com/photos/tonyromen/1736340653/">
+	            https://www.flickr.com/photos/tonyromen/1736340653/
+	          </a>
+					</p>
+          <aside class="notes">
+Later I got into puppet and chef, which automated a lot of the tedious commands for me.
+When I first started using these tools, I got really excited. Write once, deploy anywhere!
+But the reality is that this much lauded flexibility buys you very little.
+          </aside>
+        </section>
+<!--
+        <section data-background="/images/leaky3.jpg">
+					<p style="vertical-align: bottom; padding-top: 600px">
+	          <a href="https://www.flickr.com/photos/johnx62/626172860/">
+	            https://www.flickr.com/photos/johnx62/626172860/
+	          </a>
+					</p>
           <aside class="notes">
             You are not a beautiful or unique snowflake.
           </aside>
         </section>
 
-        <section data-background="/images/chef3.jpg">
-          <a href="https://www.flickr.com/photos/blockolug/5134899619/">
-            https://www.flickr.com/photos/blockolug/5134899619/
-          </a>
 
+<section data-background="/images/leaky.jpg">
+	<p style="vertical-align: bottom; padding-top: 600px">
+		<a href="https://www.flickr.com/photos/70196547@N02/12191343226/">
+			https://www.flickr.com/photos/70196547@N02/12191343226/
+		</a>
+	</p>
+	<aside class="notes">
+	</aside>
+</section> -->
+
+<section data-background="/images/leaky2.jpg">
+	<h2>
+		<a href="http://www.joelonsoftware.com/articles/LeakyAbstractions.html">"The Law of Leaky Abstractions"</a>
+	</h2>
+	<h3>Joel Spolsky</h3>
+	<p>
+		<ul>
+			<li class="fragment">
+				<blockquote cite="http://www.joelonsoftware.com/articles/LeakyAbstractions.html">
+					&ldquo;All non-trivial abstractions, to some degree, are leaky.&rdquo;
+				</blockquote>
+			</li>
+		</ul>
+	</p>
+	<p style="vertical-align: bottom; padding-top: 300px">
+		<a href="https://www.flickr.com/photos/eflon/3618086176/">
+			https://www.flickr.com/photos/eflon/3618086176/
+		</a>
+	</p>
+	<aside class="notes">
+Has anyone read this article: slide. Can you summarize it for us?
+The Law of Leaky Abstractions states that "All non-trivial abstractions, to some degree, are leaky."
+This means that in order to use an abstraction you have to keep in your head the both the underlying and the abstracted behavior.
+Think of ActiveRecord and a really gnarly SQL join.
+	</aside>
+</section>
+
+<section data-background="/images/chef3.jpg">
+	<p style="vertical-align: bottom; padding-top: 600px">
+		<a href="https://www.flickr.com/photos/blockolug/5134899619/">
+			https://www.flickr.com/photos/blockolug/5134899619/
+		</a>
+	</p>
+	<aside class="notes">
+In the case of chef, you need to keep boot loaded into your head:
+* ruby syntax
+* the chef DSL
+* details about your unix package manager of choice
+* the configuration of the specific package you are using
+* unix file system and security
+
+This all makes for really tricky debugging problems.
+I find myself using the shell to figure out the command sequence I'm looking for,
+and then working my way through the chef recipe code to figure out the incantation that will get me there.
+blech.
+
+Most of this complexity comes from leaks abstraction layer.
+Has anyone used puppet or chef to deploy the same recipe to multiple OSes?
+In my experience this is pretty rare.
+	</aside>
+</section>
+
+        <section data-background="/images/shipping_container.jpg">
+					<p style="vertical-align: bottom; padding-top: 600px">
+	          <a href="https://www.flickr.com/photos/jaxport/2573738650/">
+	            https://www.flickr.com/photos/jaxport/2573738650/
+	          </a>
+					</p>
           <aside class="notes">
-            Puppet or Chef makes things a little bit better
+Let's look at a different way we can do this.
+
+Docker is a shipping container for code
+
+Cheap, zero penalty containers for deploying services.
+a VM without the overhead of a VM
           </aside>
         </section>
 
-
-        <!--
-          chef1 https://www.flickr.com/photos/travster/11296995/
-          chef2 https://www.flickr.com/photos/tonyromen/1736340653/
-          chef3 https://www.flickr.com/photos/blockolug/5134899619/
-        -->
-
-				<section data-markdown>
-					<script type="text/template">
-						## Markdown support
-
-						For those of you who like that sort of thing. Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-
-						```
-						<section data-markdown>
-						  ## Markdown support
-
-						  For those of you who like that sort of thing.
-						  Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-						</section>
-						```
-					</script>
-				</section>
-
 				<section>
-					<section data-background="#007777">
-						<h2>Slide Backgrounds</h2>
-						<p>
-							Set <code>data-background="#007777"</code> on a slide to change the full page background to the given color. All CSS color formats are supported.
-						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png">
-						<h2>Image Backgrounds</h2>
-						<pre><code>&lt;section data-background="image.png"&gt;</code></pre>
-					</section>
-					<section data-background="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" data-background-repeat="repeat" data-background-size="100px">
-						<h2>Repeated Image Backgrounds</h2>
-						<pre><code style="word-wrap: break-word;">&lt;section data-background="image.png" data-background-repeat="repeat" data-background-size="100px"&gt;</code></pre>
-					</section>
+					<h3>chroot + git</h3>
+					<ol>
+						<li>Process isolation</li>
+						<li>disk isolation</li>
+						<li>network isolation</li>
+						<li>resource limitations</li>
+						<li>Ops Friendly: standard start/stop/etc</li>
+						<li>Efficient: Copy on write</li>
+					</ol>
+					<aside class="notes">
+Docker is built on top of LXC, which is a container technology like chroot on steroids.
+It allows you to isolate processes and control memory, CPU, network access, etc.
+It is kind of like a VM, but but much lighter
+
+And because Docker's provisioning is just bash commands, when there is a problem you use the same troubleshooting toolkit.
+No more puzzling over how to get chef or puppet to do the right thing!
+					</aside>
 				</section>
 
-				<section>
-					<h2>Clever Quotes</h2>
-					<p>
-						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;The nice thing about standards is that there are so many to choose from&rdquo;</q> and block:
-					</p>
-					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						&ldquo;For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.&rdquo;
-					</blockquote>
-				</section>
+<section>
+	<h2>Super Simple Vagrantfile</h2>
+	<pre><code data-trim contenteditable class="ruby">
+VAGRANTFILE_API_VERSION = "2"
 
-				<section>
-					<h2>Pretty Code</h2>
-					<pre><code data-trim contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+	config.vm.hostname = "your-app"
 
-    var nodes = document.querySelectorAll( selector );
+	config.vm.box = "docker-ubuntu-12.04.3-amd64-vbox"
+	config.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/ubuntu-12.04.3-amd64-vbox.box"
 
-    for( var i = 0, len = nodes.length; i &lt; len; i++ ) {
-      var node = nodes[i];
+	config.vm.provision "docker" do |d|
+		d.pull_images "ubuntu"
+	end
+end
+	</code></pre>
+	<aside class="notes">
+		Cool. How do we get started?
+		The easiest way to install Docker is to use Vagrant.
+		Show of hands for who uses Vagrant?
+		So with this simple Vagrant file we can `vagrant up` ourselves a Docker box.
+		This takes a lot of time to run, so I'm not going to demo that part.
+		Just be sure to use this specific docker friendly vagrant box from our friends at Phusion Passenger.
+		There is also a docker installer for homebrew
+		which I haven't used, because getting non-devs to use homebrew is horrible.
+	</aside>
+</section>
 
-      if( !node.className ) {
-        node.className += ' roll';
-      }
-    }
-  }
-}
-					</code></pre>
-					<p>Courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
-				</section>
+<section>
+	<h2>Super Simple Dockerfile</h2>
+	<pre><code data-trim contenteditable class="ruby">
+FROM ubuntu:precise
+MAINTAINER "marshall@yountlabs.com"
 
-				<section>
-					<section id="fragments">
-						<h2>Fragmented Views</h2>
-						<p>Hit the next arrow...</p>
-						<p class="fragment">... to step through ...</p>
-						<ol>
-							<li class="fragment"><code>any type</code></li>
-							<li class="fragment"><em>of view</em></li>
-							<li class="fragment"><strong>fragments</strong></li>
-						</ol>
+WORKDIR /app
+ADD . /app
+CMD "bin/docker_entrypoint.sh"
+	</code></pre>
+	<aside class="notes">
+Once we have a Vagrant box up and running, we need a minimal Dockerfile to get started with. This one contains only FROM and MAINTAINER tags, which should go at the top of each Dockerfile. The FROM tag tells the source image that we are starting with and the MAINTAINER tag conveniently points to me!
+	</aside>
+</section>
 
-						<aside class="notes">
-							This slide has fragments which are also stepped through in the notes window.
-						</aside>
-					</section>
-					<section>
-						<h2>Fragment Styles</h2>
-						<p>There's a few styles of fragments, like:</p>
-						<p class="fragment grow">grow</p>
-						<p class="fragment shrink">shrink</p>
-						<p class="fragment roll-in">roll-in</p>
-						<p class="fragment fade-out">fade-out</p>
-						<p class="fragment highlight-red">highlight-red</p>
-						<p class="fragment highlight-green">highlight-green</p>
-						<p class="fragment highlight-blue">highlight-blue</p>
-						<p class="fragment current-visible">current-visible</p>
-						<p class="fragment highlight-current-blue">highlight-current-blue</p>
-					</section>
-				</section>
+<section>
+	<h2>First build</h2>
+	<pre><code data-trim contenteditable class="bash">
+$ vagrant ssh
+vagrant@your-app:~$ sudo -s
+oot@your-app:~$ docker build -t your-app/rails /your-app/.
+Uploading context 58.37 kB
+Uploading context
+Step 0 : FROM ubuntu:precise
+ ---> 9cd978db300e
+Step 1 : MAINTAINER "marshall@yountlabs.com"
+ ---> Using cache
+ ---> 9299d621c5f1
+Step 2 : WORKDIR /app
+ ---> Using cache
+ ---> 94cc183cd64c
+Step 3 : ADD . /app
+ ---> Using cache
+ ---> ec4b147fc17b
+Step 4 : CMD "bin/docker_entrypoint.sh"
+ ---> Using cache
+ ---> 0d775c632709
+Successfully built 0d775c632709
+	</code></pre>
+	<aside class="notes">
+		We can either execute this Dockerfile manually like so:
+	</aside>
+</section>
 
-				<section>
-					<h2>Spectacular image!</h2>
-					<a class="image" href="http://lab.hakim.se/meny/" target="_blank">
-						<img width="320" height="299" src="http://s3.amazonaws.com/hakim-static/portfolio/images/meny.png" alt="Meny">
-					</a>
-				</section>
+<section>
+	<h2>looking Around</h2>
+	<pre><code data-trim contenteditable class="bash">
+vagrant@your-app:~$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED              VIRTUAL SIZE
+your-app/rails      latest              0d775c632709        About a minute ago   204.4 MB
+<none>              <none>              131e04b50365        6 minutes ago        204.4 MB
+<none>              <none>              0b64bc08ccae        6 minutes ago        204.4 MB
+<none>              <none>              20c26b49c9c6        9 minutes ago        204.4 MB
+<none>              <none>              ac2c44f0a901        14 minutes ago       204.4 MB
+ubuntu              13.10               9f676bd305a4        8 weeks ago          178 MB
+ubuntu              saucy               9f676bd305a4        8 weeks ago          178 MB
+ubuntu              raring              eb601b8965b8        8 weeks ago          166.5 MB
+ubuntu              13.04               eb601b8965b8        8 weeks ago          166.5 MB
+ubuntu              12.10               5ac751e8d623        8 weeks ago          161 MB
+ubuntu              quantal             5ac751e8d623        8 weeks ago          161 MB
+ubuntu              10.04               9cc9ea5ea540        8 weeks ago          180.8 MB
+ubuntu              lucid               9cc9ea5ea540        8 weeks ago          180.8 MB
+ubuntu              12.04               9cd978db300e        8 weeks ago          204.4 MB
+ubuntu              latest              9cd978db300e        8 weeks ago          204.4 MB
+ubuntu              precise             9cd978db300e        8 weeks ago          204.4 MB
+	</code></pre>
+</section>
+
+<section>
+	<h2>Now let's look around</h2>
+	<pre><code data-trim contenteditable class="bash">
+vagrant@your-app:~$ docker run -i -t your-app/rails /bin/bash
+root@5af3050457d2:/app$ ls
+Dockerfile  Gemfile  README.rdoc  Rakefile  Vagrantfile  app/  bin/  config/  config.ru  db/  lib/  log/  public/  test/  tmp/  vendor/
+root@5af3050457d2:/app$ exit
+exit
+vagrant@your-app:~$ docker ps -a
+CONTAINER ID        IMAGE                   COMMAND             CREATED              STATUS              PORTS               NAMES
+5415a7e7f93a        your-app/rails:latest   /bin/bash           About a minute ago   Exit 0                                  mad_bardeen
+5af3050457d2        0d775c632709            /bin/bash           4 minutes ago        Exit 0                                  loving_pare
+	</code></pre>
+	<aside class="notes">
+We can execute commands natively if we open a bash session with TTY flag
+	</aside>
+</section>
+
+<section>
+	<h2>Vagrantfile</h2>
+	<pre><code data-trim contenteditable class="ruby">
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.hostname = "your-app"
+
+  config.vm.box = "docker-ubuntu-12.04.3-amd64-vbox"
+  config.vm.box_url = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/ubuntu-12.04.3-amd64-vbox.box"
+
+  config.vm.synced_folder ".", "/your-app"
+
+  config.vm.provision "docker" do |d|
+    d.pull_images "ubuntu"
+  end
+
+  cmd = "docker build -t your-app/rails /your-app/.
+        docker run -t your-app/rails"
+
+  config.vm.provision "shell", inline: cmd
+end
+	</code></pre>
+	<aside class="notes">
+		Now that we know the build/run commands, we can embed them in a Vagrantfile, like so.
+		The synced folder brings the current directory into the Vagrant VM.
+	</aside>
+</section>
+
+<section>
+	<h2>Add Dependencies</h2>
+	<pre><code data-trim contenteditable class="bash">
+FROM ubuntu:precise
+
+# update packages
+RUN apt-get update
+# install editors
+RUN apt-get -y install vim tmux emacs
+# install web server
+RUN apt-get -y install apache2-mpm-worker mysql-server
+# install database clients
+RUN apt-get -y install redis-server mysql-client libmysql-ruby libmysqlclient-dev
+# install ruby and dependencies
+RUN apt-get -y install build-essential git-core curl
+# install rails dependencies
+RUN apt-get -y install nodejs	</code></pre>
+	<aside class="notes">
+Now, we can install some editors and helpful tools
+Install database clients
+Install ruby dependencies
+Install rails dependencies
+	</aside>
+</section>
+
+<section>
+	<h2>IRL: You only get 42 steps, don't waste them</h2>
+	<pre><code data-trim contenteditable class="bash">
+FROM ubuntu:precise
+
+# update packages
+RUN apt-get update
+# install editors
+RUN apt-get -y install vim tmux emacs apache2-mpm-worker mysql-server redis-server mysql-client libmysql-ruby libmysqlclient-dev build-essential git-core curl nodejs
+</code></pre>
+	<aside class="notes">
+		AUFS has a limit of 42 layers, which means you can't have more than 42 steps in your Dockerfile. Ick.
+	</aside>
+</section>
+
+<section>
+	<h2>Install RVM</h2>
+	<pre><code data-trim contenteditable class="ruby">
+RUN curl -L https://get.rvm.io | bash -s stable
+RUN echo 'source /usr/local/rvm/scripts/rvm' >> /etc/bash.bashrc
+
+RUN /bin/bash -l -c 'rvm install 2.1.0'
+RUN /bin/bash -l -c 'rvm use 2.1.0 --default'
+	</code></pre>
+	<aside class="notes">
+		Don't use RVM in production, kids!
+		What does `bash -l -c` mean? Ask the audience.
+</aside>
+</section>
+
+<section>
+	<h2>Let's make a server</h2>
+	<pre><code data-trim contenteditable class="bash">
+WORKDIR /app
+ADD . /app
+
+# must upgrade bundler to 1.5.1+ or minitest will not install
+RUN /bin/bash -l -c 'gem install bundler'
+RUN /bin/bash -l -c 'bundle install -j2'
+
+EXPOSE 3000
+CMD "bin/docker_entrypoint.sh"
+	</code></pre>
+	<aside class="notes">
+	</aside>
+</section>
+
+<section>
+	<h2>Poke a hole</h2>
+	<pre><code data-trim contenteditable class="ruby">
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.network :forwarded_port, guest: 3000, host: 3000
+
+  cmd = "docker build -t your-app/rails /your-app/.
+        docker run -p 3000:3000 -t your-app/rails"
+
+  config.vm.provision "shell", inline: cmd
+end
+	</code></pre>
+	<aside class="notes">
+	</aside>
+</section>
+
+<section>
+	<h2>Setup Databases</h2>
+	<pre><code data-trim contenteditable class="ruby">
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.provision "docker" do |d|
+    d.pull_images "ubuntu"
+
+    d.pull_images "tutum/mysql"
+    d.run "tutum/mysql",
+      args: '-e MYSQL_PASS="docker" -name mysql'
+
+    d.pull_images "crosbymichael/redis"
+    d.run "crosbymichael/redis",
+      args: "-name redis"
+  end
+
+  cmd = "docker build -t your-app/rails /your-app/.
+        docker run --link=[mysql:mysql] --link=[redis:redis] -p 3000:3000 -t your-app/rails"
+
+  config.vm.provision "shell", inline: cmd
+end
+	</code></pre>
+	<aside class="notes">
+	</aside>
+</section>
+
+<section>
+	<h2>And mount in the entrypoint</h2>
+	<pre><code data-trim contenteditable class="ruby">
+# bash -l -c '/usr/bin/env'
+
+DATABASE_URL="mysql2://admin:${MYSQL_ENV_MYSQL_PASS}@${MYSQL_PORT_3306_TCP_ADDR}:${MYSQL_PORT_3306_TCP_PORT}/content_guard_development"
+REDIS_URL="redis://${REDIS_PORT_6379_TCP_ADDR}:${REDIS_PORT_6379_TCP_PORT}${REDIS_NAME}"
+
+grep -q DATABASE_URL   .env.docker || echo "DATABASE_URL=${DATABASE_URL}" >> .env
+grep -q REDIS_URL      .env.docker || echo "REDIS_URL=${REDIS_URL}" >> .env
+
+bash -l -c 'bin/rake db:create; exit 0'
+bash -l -c 'bin/rake db:migrate db:seed'
+bash -l -c 'bin/rake assets:precompile'
+
+bash -l -c 'bin/rails server'
+	</code></pre>
+	<aside class="notes">
+	</aside>
+</section>
+
+
+<section>
+	<h2>bin/docker_entrypoint.sh</h2>
+	<pre><code data-trim contenteditable class="bash">
+bash -l -c '/usr/bin/env'
+bash -l -c 'bin/rails server'
+	</code></pre>
+	<aside class="notes">
+	</aside>
+</section>
+
 
 			</div>
 
@@ -246,7 +542,7 @@ function linkify( selector ) {
 				history: true,
 				center: true,
 
-				theme: "moon", // available themes are in /css/theme
+				theme: "night", // available themes are in /css/theme
 				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
 
 				// Parallax scrolling
