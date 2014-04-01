@@ -1,0 +1,142 @@
+Hi everyone, I'm Marshall Yount. I'm a performance hacker and a Rubyist.
+
+Tonight I'm going to show you how to quickly and easily deploy a Rails app using Docker.
+
+If you are like me, the first Rails app you deployed was to a server that some one else had configured. Deployments were as easy as `cap deploy`!
+
+Later I got into puppet and chef, which automated a lot of the tedious commands for me. When I first started using these tools, I got really excited. Write once, deploy anywhere!
+
+But the reality is that this much lauded flexibility buys you very little. Has anyone read this article: slide. Can you summarize it for us?
+
+The Law of Leaky Abstractions states that "All non-trivial abstractions, to some degree, are leaky." This means that in order to use an abstraction you have to keep in your head the both the underlying and the abstracted behavior. Think of ActiveRecord and a really gnarly SQL join.
+http://www.joelonsoftware.com/articles/LeakyAbstractions.html
+
+The problem with Chef and Puppet, restated, is that you spend a lot of time learning their abstraction layer, but in order to use it properly you have to constantly be thinking about the nitty gritty details of the things they are automating for you anyway.
+
+Bash + Containers = Docker
+
+photo: balloon or scales?
+Docker is built on top of LXC, which is a container technology like chroot on steroids. It allows you to isolate processes and control memory, CPU, network access, etc. It is kind of like a VM, but but much lighter
+
+Docker is a layer on top of LXC that allows you to build a server out of the same bash commands that you would use for a beautiful unique snowflake deploy.
+
+What's nice about this is that when there is a problem you use the same troubleshooting toolkit. No more digging around in bash to find the correct incantation and then puzzling over how to get chef or puppet to do the right thing!
+
+The easiest, most portable way to install Docker is to use Vagrant. Since Vagrant 1.5, Vagrant supports a Docker provisioning type just like Chef, Puppet, etc.
+
+[Simple docker Vagrantfile goes here]
+
+Who uses Vagrant, what do you use it for, etc.
+
+What I like about this is the super simple install for new users who might not have homebrew installed. Or WINDOZE users.
+
+So with this simple Vagrant file we can `vagrant up` ourselves a Docker box. This takes a lot of time to run, so I'm not going to demo that part. Just be sure to use this specific docker friendly vagrant box from our friends at Phusion Passenger.
+
+[super simple Dockerfile]
+
+Once we have a Vagrant box up and running, we need a minimal Dockerfile to get started with. This one contains only FROM and MAINTAINER tags, which should go at the top of each Dockerfile. The FROM tag tells the source image that we are starting with and the MAINTAINER tag conveniently points to me!
+
+We can either execute this Dockerfile manually like so:
+[code slide]
+
+We can execute commands natively if we open a bash session with TTY flag
+[code slide]
+
+Or by updating the Vagrant file like this:
+[code slide]
+
+Now, we can install some editors and helpful tools
+[code slide]
+
+Install a web server
+[code slide]
+
+Install database clients
+[code slide]
+
+Install ruby dependencies
+[code slide]
+
+Install rails dependencies
+[code slide]
+
+And install RVM
+[code slide]
+
+Boot rails
+[code slide]
+
+Run the rails server
+[code slide]
+
+Hey look, there are a couple of Docker commands we haven't seen here yet. First there is the ADD command, which copies files from the Host into the container. Next there's a new EXPOSE command which allows a local port inside the container to be made available outside the container. Finally, we haven't seen this CMD before. The same way that FROM has to be the first command in your Dockerfile, CMD should be the last. CMD is the command that Docker leaves running while the container stays open. In this case, we're using `bin/rails server`
+
+Caveat Emptor
+
+HUGE WARNING: This Dockerfile is provided only for reference. IRL you would want to group these up because of the 42 AUFS layer limit.
+
+Tricky Bits
+
+How does RVM work? What does `bash -l -c` mean? Ask the audience.
+
+Rerunning `bundle install` if the Gemfile has changed.
+[code slide]
+
+Installing databases
+[Vagrantfile - add other images]
+
+Linking other containers
+[code slide - link statements]
+
+Making an entry point script
+
+We are going to use a couple of new constructs here
+
+Overview
+A brief history of deploying Rails
+
+  inherit a server
+  beautiful unique snowflakes
+  chef
+  leaky abstractions
+  docker
+
+Introduction to Docker
+  containers
+
+Install Docker
+
+Install Docker using Vagrant
+  choosing a vagrant box
+
+docker build - < filename
+cat Dockerfile.genericwebapp | docker build -t genericwebapp -
+
+My 1st Dockerfile
+  FROM
+    FROM must be the first non-comment instruction in the Dockerfile.
+Building blocks
+
+  RUN
+  CMD
+  ENTRYPOINT
+  WORKDIR
+  ADD
+  EXPOSE
+
+Debugging a Docker setup
+  docker run bash -l
+  docker ps
+  docker -t
+
+setup Ruby
+  rvm, rbenv, from source
+
+tricky bits
+  how does rvm work?
+  bash -l -c
+  caching bundler
+  murder all the docker containers
+
+install rails
+  dotenv
